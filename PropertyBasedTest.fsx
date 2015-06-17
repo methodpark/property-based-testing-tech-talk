@@ -4,6 +4,7 @@
 
 open Implementation
 
+open System
 open FsCheck
 
 type Tests() =
@@ -17,3 +18,16 @@ type Tests() =
         add x 0 = x
 
 Check.QuickAll typeof<Tests>
+
+
+
+type Person = {
+    Birthday: DateTime
+    Name: string
+}
+
+let aNameIsNeverShorterThan4Chars (p: Person) =
+    not (p.Name.Length < 4)
+
+Check.Quick aNameIsNeverShorterThan4Chars
+
