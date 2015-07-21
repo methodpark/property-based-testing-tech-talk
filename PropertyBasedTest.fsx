@@ -25,23 +25,47 @@ Check.QuickAll typeof<Tests>
 // Generators
 /////////////
 
-type Scale = int
 
-let generator : Gen<Scale> = Gen.oneof [ gen { return 1 }; gen { return 3 }; gen { return 5; } ]
+
+// For many of the default types:
+
+(Arb.from<String>).Generator.Sample (10, 10)
+(Arb.from<System.IO.DriveType>).Generator.Sample (10, 10)
+
+type Cache = Map<String, float>
+(Arb.from<Cache>).Generator.Sample (10, 10)
+
+// For F# types
+type Foo = 
+    | Bar
+    | Baz of DateTime
+    | Bazinga of int * String
+
+(Arb.from<Foo>).Generator.Sample (10, 10)
+
+type Poco (bytes: byte[]) = // see? even arrays
+    member x.MP3 = bytes
+
+(Arb.from<Poco>).Generator.Sample (10, 10)
+
+// Define your own:
+type Scale = Scale of int // Should only be 1, 3 or 5
 
 type MyGenerators () =
     static member Scale = 
-        {new Arbitrary<Scale>() with 
-            override x.Generator = generator
-            }
+        Arb.from<int>
+        |> Arb.filter (fun s -> match s with
+                                | 1 | 3 | 5 -> true
+                                | _ -> false)
+        |> Arb.convert (fun s -> Scale(s)) (fun (Scale(s)) -> s)
 
 Arb.register<MyGenerators>()
 
-let ``Scale is always smaller than 6`` (s: Scale) =
+let ``Scale is always smaller than 6`` (scale: Scale) =
+    let (Scale(s)) = scale
     s < 6
 
 Check.Quick ``Scale is always smaller than 6``
-
 
 ////////////
 // Shrinking
@@ -53,6 +77,6 @@ type Person = {
 
 // Based on the type this won't hold
 let ``A person is not older than 75`` (p: Person) =
-    p.Age < 75
+    p.Age <= 75
 
 Check.Quick ``A person is not older than 75``
