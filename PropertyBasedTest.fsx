@@ -19,15 +19,40 @@ type Tests() =
 
 Check.QuickAll typeof<Tests>
 
+// How does it work?
+
+/////////////
+// Generators
+/////////////
+
+type Scale = int
+
+let generator : Gen<Scale> = Gen.oneof [ gen { return 1 }; gen { return 3 }; gen { return 5; } ]
+
+type MyGenerators () =
+    static member Scale = 
+        {new Arbitrary<Scale>() with 
+            override x.Generator = generator
+            }
+
+Arb.register<MyGenerators>()
+
+let ``Scale is always smaller than 6`` (s: Scale) =
+    s < 6
+
+Check.Quick ``Scale is always smaller than 6``
 
 
+////////////
+// Shrinking
+////////////
 type Person = {
-    Birthday: DateTime
     Name: string
+    Age: int
 }
 
-let aNameIsNeverShorterThan4Chars (p: Person) =
-    not (p.Name.Length < 4)
+// Based on the type this won't hold
+let ``A person is not older than 75`` (p: Person) =
+    p.Age < 75
 
-Check.Quick aNameIsNeverShorterThan4Chars
-
+Check.Quick ``A person is not older than 75``
