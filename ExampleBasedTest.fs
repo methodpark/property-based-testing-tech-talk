@@ -21,3 +21,4 @@ let ``adding a number and its negative 0 is returned`` () =
     add 120 -120 |> should equal 0
 
 // So, is the implementation error free??
+// Let's test the implementation using property based testing...
