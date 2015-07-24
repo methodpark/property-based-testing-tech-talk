@@ -1,6 +1,6 @@
 ﻿#r "packages/NUnit.2.6.4/lib/nunit.framework.dll"
 #r "packages/FsCheck.2.0.1/lib/net45/FsCheck.dll"
-#r "bin/Debug/proptest-techtalk.exe"
+#r "Core/bin/Debug/Core.dll"
 
 open Implementation
 

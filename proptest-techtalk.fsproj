@@ -40,7 +40,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="Implementation.fs" />
     <Compile Include="ExampleBasedTest.fs" />
     <Compile Include="PropertyBasedTest.fsx" />
   </ItemGroup>
@@ -49,5 +48,11 @@
     <None Include="packages.config" />
     <None Include="WhyShouldICare.fsx" />
     <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Core\Core.fsproj">
+      <Project>{AED10A05-AA98-4187-83F1-AB85192E943B}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
