@@ -1,5 +1,11 @@
 ﻿(*
-I don't use F#/C#/Haskell/Erlang, why should I care?
+Integration with NUnit and XUnit: https://fscheck.github.io/FsCheck/RunningTests.html
+
+FsCheck => Nunit => Jenkins|Hudson|WhatHaveYou™
+
+
+
+I don't use F#/C#/Haskell, why should I care?
 
 AUTOSAR at VOLVO Example, C-Code tested with Erlang: 
 https://vimeo.com/68331689
